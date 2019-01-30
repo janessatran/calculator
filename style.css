@@ -1,0 +1,148 @@
+
+h1 {
+    text-align: center;
+    color: rgb(0, 52, 110);
+    justify-content: center;
+    vertical-align: middle;
+    margin-top: 20px;
+    grid-area: 1 / 2; 
+}
+html {
+    width: 100%;
+    height: 100%;
+    font: 15px 'Silkscreen', monospace;
+    letter-spacing: 1px;
+}
+body {
+    display: grid;
+    grid-template: 1fr auto 1fr / 1fr auto 1fr; 
+    width: 100%;
+    height: 100%;
+    background-color: #f3d491;
+}
+
+main {
+    grid-area: 2 / 2;
+    display: grid;
+    grid-template: 100px 30px repeat(5, 60.54px) / repeat(4, 60.54px);
+    grid-gap: 8px;
+    background-color: grey;
+    border: 16px solid grey;
+    border-radius: 12px;
+  }
+
+button{
+    border-radius: 5px;
+    border: none;
+    font-size: 22.65px;
+    color: rgb(0, 52, 110);;
+}
+button:active{
+    opacity: .8;
+}
+
+#digit0{
+grid-area: 7 / 1;
+}
+
+#digit1{
+grid-area: 6 / 1;
+}
+
+#digit2{
+grid-area: 6 / 2;
+}
+
+#digit3{
+grid-area: 6 / 3;
+}
+
+#digit4{
+grid-area: 5 / 1;
+}
+
+#digit5{
+grid-area: 5 / 2;
+}
+
+#digit6{
+grid-area: 5 / 3;
+}
+
+#digit7{
+grid-area: 4 / 1;
+}
+
+#digit8{
+grid-area: 4 / 2;
+}
+
+#digit9{
+grid-area: 4 / 3;
+}
+
+#point{
+    grid-area: 7 / 2;
+}
+
+#plus{
+    grid-area: 5 / 4;
+}
+
+#minus{
+    grid-area: 4 / 4;
+}
+
+#multiply{
+    grid-area: 3 / 4;
+}
+
+#divide{
+    grid-area: 3 / 3;
+}
+
+#equals{
+    grid-area: 6 / 4 / span 2 / span 1;
+    background-color: #ce5432;
+}
+
+#percent{
+    grid-area: 3 / 2;
+}
+
+#clear{
+    grid-area: 3 / 1;
+}
+
+#neg-pos{
+    grid-area: 7 / 3;
+}
+
+#calc-screen{
+    grid-area: 1 / 1 / span 1 / span 4;
+    font-size: 39.6px;
+    color: rgb(0, 52, 110);
+    background-color: #fff;
+    border-color: #fff;
+    border-radius: 3px 3px 0 0;
+}
+
+#calc-buttons{
+    grid-area: 2 / 1 / span 1 / span 4;
+    font-size: 14px;
+    white-space: nowrap;
+    color: rgb(0, 52, 110);
+    background-color: #ddd;
+    border-color: #ddd;
+    margin: -8px 0 8px 0;
+    border-radius: 0 0 3px 3px;
+}
+
+.calculator{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-width: 0 19px;
+    border-style: solid;
+    overflow: hidden;
+}

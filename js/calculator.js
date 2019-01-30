@@ -6,20 +6,20 @@ function subtract (a, b) {
 	return a - b;
 }
 
-function sum (arr) {
-	var sum = 0;
-	for(i = 0; i < arr.length; i++) {
-		sum += arr[i]
-	}
-	return sum;
+
+function multiply (a, b) {
+	return a * b;
 }
 
-function multiply (arr) {
-	var m = arr[0];
-	for(i = 1; i < arr.length; i++) {
-		m *= arr[i];
-	}
-	return m;
+function divide(a, b) {
+	return a / b;
+}
+
+function operator(o, a, b){
+	if(o == "+") add(a,b)
+	else if(o == "-") subtract(a,b)
+	else if(o == "*") multiply(a,b)
+	else if(o == "/") divide(a,b)
 }
 
 function power(a, b) {
