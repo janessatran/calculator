@@ -1,140 +1,147 @@
-var displayNumbers = document.getElementById('calc-screen');
-var displayOperation = document.getElementById('calc-operation');
-var validNumbers = ['0','1','2','3','4','5','6','7','8','9'];
-var validOperators = ['-', '*', '+', '/'];
-var validActions = ['=', 'Backspace', 'Enter', 'Shift', 'Meta', 'r'];
-var validSigns = ['%', '.'];
-var lastValNum = false;
-var storedValues = [];
-var storedOperands = [];
-var storedSigns = [];
-var operationString = '';
-var currValue = '';
+var display = document.getElementById("calc-screen");
+var point = document.getElementById("point");
+var numbers = [];
+var operators = [];
+var newNumber = true;
 
 
-document.addEventListener('keydown', function(event) {
-	event = event || window.event;
-	var charCode = event.key || event.which;
-	if (event.repeat) return;
-	else{
+let numButtons = document.querySelectorAll(".number");
+numButtons.forEach(function(n) {
+	n.addEventListener("click", updateMainScreen);
 
-	
-
-		console.log(charCode);
-		if (!validNumbers.includes(charCode) && !validOperators.includes(charCode) && !validActions.includes(charCode) && !validSigns.includes(charCode)){
-			alert("Please enter numeric values or operators only.")
-		}
-		// update display
-		else {
-			var newVal = charCode;
-			if(!validOperators.includes(charCode)) {
-				if (validNumbers.includes(charCode) || validSigns.includes(charCode)) {
-					currValue += charCode;
-				}
-				newVal = currValue;
-				console.log('new value!')
-				console.log(newVal);
-				lastValNum = true;
-			}
-			if (!validActions.includes(charCode)){
-				operationString += (charCode);
-			}
-			storeValues(newVal); 
-
-
-			if(charCode == 'Backspace') {
-				operationString = operationString[0,operationString.length-1];
-				if(lastValNum) {
-					storedValues.pop(); 
-					currValue = storedValues[storedValues.length-1];
-				}
-				else {
-					storedOperands.pop();
-				}
-				console.log(operationString);
-
-				operationString = operationString.slice(0, -1)
-				console.log(operationString);
-
-			}
-
-			updateMainScreen();
-			updateOpScreen();
-			console.log(storedValues);
-			console.log(storedOperands);
-			if((charCode == '=' || charCode == 'Enter' ) || storedValues.length > 1 && storedOperands.length > 0) {
-				let a = parseFloat(storedValues[0]);
-				let b = parseFloat(storedValues[1]);
-				let o = storedOperands[0]; 
-				operate(o, a, b);
-			}
-
-		}
-	}
 });
 
-function storeValues(value) {
-	console.log('storing value...');
-	console.log(value);
-	if (validNumbers.includes(value) || validSigns.includes(value)) {
-		console.log('pushing value...')
-		storedValues.push(value);
-	}
-	else if (validOperators.includes(value)) {
-		storedOperands.push(value);
-	}
-}	
+let opButtons = document.querySelectorAll(".operator");
+opButtons.forEach(function(operator) {
+  operator.addEventListener("click", addNumber);
+});
 
-function updateValues(result) {
-	storedValues.pop();
-	storedValues.pop();
-	storedValues.push(result);
-	storedOperands.pop();
-	// currValue = '';
-	// operationString = '';
-	// updateOpScreen();
+point.addEventListener("click", disablePoint);
+	function disablePoint() {
+		point.disabled = true;
 }
 
+function operate(a, b, operator) {
+  if(operator === "+") return a + b;
+  else if(operator === "-") return a - b;
+  else if(operator === "*") return a * b;
+  else return a / b;
+}
+
+function disableOperators(boolean) {
+	for(let i = 0; i < opButtons.length; i++) {
+		opButtons[i].disabled = boolean;
+	  }
+  }
+  
 function updateMainScreen() {
-	displayNumbers.textContent = currValue;
+	if(newNumber === false) {
+		display.textContent = "";
+		newNumber = true;
+	}
+	display.textContent += this.value;
+	disableOperators(false);
 }
 
-function updateOpScreen() {
-	displayOperation.textContent = operationString;
-
+function newSession() {
+	if(display.textContent === "") {
+		disableOperators(true);
+	}
 }
 
-function add (a, b) {
-	currValue =  a + b;
-	if(toString(currValue).length>5) currValue = parseFloat(currValue.toFixed(5));
-	updateValues(currValue);
-	updateMainScreen();
+newSession();
+
+function addNumber() {   
+	numbers.push(parseFloat(display.textContent));
+	operators.push(this.value);
+	newNumber = false;
+	disableOperators(true);
+	if(numbers.length == 2) {
+		let a = numbers[0];
+		let b = numbers[1];
+		let result = operate(a, b, operators[operators.length-2]);
+		numbers.length = 0;
+		numbers.push(result);
+		console.log(numbers[0]);
+		display.textContent = numbers[0];
+		console.log(display.textContent);
+	}
+	// result.toFixed(5);
+	point.disabled = false;
 }
 
-function subtract (a, b) {
-	currValue =  a - b;
-	if(toString(currValue).length>5) currValue = parseFloat(currValue.toFixed(5));
-	updateValues(currValue);
-	updateMainScreen();
-}
-function multiply (a, b) {
-	currValue =  a * b;
-	if(toString(currValue).length>5) currValue = parseFloat(currValue.toFixed(5));
-	updateValues(currValue);
-	updateMainScreen();
-}
-function divide(a, b) {
-	currValue =  a / b;
-	if(toString(currValue).length>5) currValue = parseFloat(currValue.toFixed(5));
-	updateValues(currValue);
-	updateMainScreen();
+document.getElementById("equal").addEventListener("click", getResult);
+	function getResult() {
+		addNumber();
+		disableOperators(false);
+		operators = [];
+		numbers = [];
 }
 
-function operate(o, a, b){
-	console.log('operating...')
-	if(o == "+") add(a,b)
-	else if(o == "-") subtract(a,b)
-	else if(o == "*") multiply(a,b)
-	else if(o == "/") divide(a,b)
+document.getElementById("ce").addEventListener("click", clearDisplay);
+	function clearDisplay() {
+		numbers = [];
+		operators = [];
+		display.textContent = '';
+		newSession();
 }
 
+document.getElementById("del").addEventListener("click", clear);
+	function clear() {
+		display.textContent = display.textContent.slice(0, -1);
+}
+
+document.getElementById("neg-pos").addEventListener("click", changeSign);
+	function changeSign() {
+		display.textContent = parseFloat(display.textContent) * -1;
+}
+
+document.addEventListener("keypress", function(e) {
+  function clickKey(id){
+		console.log('click!')
+		console.log(id);
+		e.preventDefault();
+		document.getElementById(id).click();
+  }
+ switch(e.key){
+   case "1": clickKey("one");
+     break;
+   case "2": clickKey("two");
+     break;
+   case "3": clickKey("three");
+     break;
+   case "4": clickKey("four");
+     break;
+   case "5": clickKey("five");
+     break;
+   case "6": clickKey("six");
+     break;
+   case "7": clickKey("seven");
+     break;
+   case "8": clickKey("eight");
+     break;
+   case "9": clickKey("nine");
+     break;
+   case "0": clickKey("zero");
+     break;
+   case ".": clickKey("point");
+     break;
+   case "Delete": clickKey("ce");
+     break;
+   case "Backspace": clickKey("del");
+     break;
+   case "Enter": clickKey("equal");
+     break;
+   case "+": clickKey("add");
+     break;
+   case "-": clickKey("subtract");
+     break;
+   case "*": clickKey("multiply");
+     break;
+   case "/": clickKey("divide");
+	 break;
+   case "s": clickKey("neg-pos");
+   	 break;
+ }
+
+});

@@ -85,11 +85,11 @@ grid-area: 4 / 3;
     grid-area: 7 / 2;
 }
 
-#plus{
+#add{
     grid-area: 5 / 4;
 }
 
-#minus{
+#subtract{
     grid-area: 4 / 4;
 }
 
@@ -101,16 +101,16 @@ grid-area: 4 / 3;
     grid-area: 3 / 3;
 }
 
-#equals{
+#equal{
     grid-area: 6 / 4 / span 2 / span 1;
     background-color: #ce5432;
 }
 
-#percent{
+#c{
     grid-area: 3 / 2;
 }
 
-#clear{
+#ce{
     grid-area: 3 / 1;
 }
 
